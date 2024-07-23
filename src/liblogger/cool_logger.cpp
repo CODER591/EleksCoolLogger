@@ -13,8 +13,8 @@ CCoolLogger::CCoolLogger(): m_LogLevel(LogLevel_NONE),
     OpenLogFile();
 }
 
-CCoolLogger::CCoolLogger(const std::string& filename): m_LogLevel(LogLevel_NONE),
-                                                       m_sLogFileName(filename)
+CCoolLogger::CCoolLogger(const std::string& csFilename): m_LogLevel(LogLevel_NONE),
+                                                       m_sLogFileName(csFilename)
 {
     OpenLogFile();
 }
@@ -33,7 +33,7 @@ void CCoolLogger::OpenLogFile()
     m_pFile = fopen(m_sLogFileName.data(), m_csFileActions.data());
     if (!m_pFile)
     {
-        auto logLevelStr = GetLogLevelString(LogLevel_CRITICAL);
+        std::string_view logLevelStr = GetLogLevelString(LogLevel_CRITICAL);
         LogToScreen(logLevelStr, "Log file was not opened!");
         return;
     }
@@ -41,16 +41,16 @@ void CCoolLogger::OpenLogFile()
     fputs("\n", m_pFile);
 }
 
-void CCoolLogger::SetLeastLogLevel(const LogLevel log_level)
+void CCoolLogger::SetLeastLogLevel(const LogLevel cLogLevel)
 {
-    m_LogLevel = log_level;
-    auto svLogLevel = GetLogLevelString(log_level);
+    m_LogLevel = cLogLevel;
+    std::string_view svLogLevel = GetLogLevelString(cLogLevel);
     LogMsg(LogLevel_CRITICAL, "Log level has changed to: " + std::string(svLogLevel.data()));
 }
 
-std::string_view CCoolLogger::GetLogLevelString(const LogLevel level) const
+std::string_view CCoolLogger::GetLogLevelString(const LogLevel cLogLevel) const
 {
-    switch (level)
+    switch (cLogLevel)
     {
         case LogLevel_INFO:
             return {"INFO"};
@@ -65,30 +65,30 @@ std::string_view CCoolLogger::GetLogLevelString(const LogLevel level) const
     }
 }
 
-void CCoolLogger::LogToScreen(const std::string_view& svLogLevel,
-                            const std::string& msg) const
+void CCoolLogger::LogToScreen(const std::string_view& csvLogLevel,
+                            const std::string& csMessage) const
 {
-    printf("[%s] %s \n", svLogLevel.data(), msg.data());
+    printf("[%s] %s \n", csvLogLevel.data(), csMessage.data());
 }
 
-void CCoolLogger::LogToFile(const std::string_view& svLogLevel,
-                            const std::string& msg) const
+void CCoolLogger::LogToFile(const std::string_view& csvLogLevel,
+                            const std::string& csMessage) const
 {
-    if (!m_pFile) return;
-    fprintf(m_pFile, "[%s] %s \n", svLogLevel.data(), msg.data());
+    if (!m_pFile) { return; }
+    fprintf(m_pFile, "[%s] %s \n", csvLogLevel.data(), csMessage.data());
 }
 
-void CCoolLogger::LogMsg(LogLevel msgloglevel,
-                        const std::string& msg) const
+void CCoolLogger::LogMsg(const LogLevel cMsgLogLevel,
+                        const std::string& csMessage) const
 {
     //Do not log messages with smaller loglevel than is set in the logger.
-    if (msgloglevel < m_LogLevel) return;
+    if (cMsgLogLevel < m_LogLevel) { return; }
     
-    std::string_view svLogLevel = GetLogLevelString(msgloglevel);
+    std::string_view svLogLevel = GetLogLevelString(cMsgLogLevel);
     if (m_pFile)
     {
-        LogToFile(svLogLevel, msg);
+        LogToFile(svLogLevel, csMessage);
         return;
     }
-    LogToScreen(svLogLevel, msg);
+    LogToScreen(svLogLevel, csMessage);
 }

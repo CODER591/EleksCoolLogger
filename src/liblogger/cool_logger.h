@@ -32,8 +32,6 @@ class CCoolLogger
         CCoolLogger(const std::string&);
         CCoolLogger(const CCoolLogger&) = delete;
         CCoolLogger& operator=(CCoolLogger&) = delete;
-        CCoolLogger(CCoolLogger&&) = delete;
-        CCoolLogger& operator=(CCoolLogger&&) = delete;
         ~CCoolLogger();
 
         void SetLeastLogLevel(const LogLevel);
