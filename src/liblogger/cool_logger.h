@@ -5,8 +5,6 @@
 #include <string_view>
 #include <stdio.h>
 
-extern const char kDefaultFileName[];
-
 enum LogLevel
 {
     LogLevel_NONE = -1, /*Not to use with messages*/
