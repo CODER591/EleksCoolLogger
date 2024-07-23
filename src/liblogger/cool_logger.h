@@ -7,7 +7,8 @@
 
 extern const char kDefaultFileName[];
 
-enum LogLevel {
+enum LogLevel
+{
     LogLevel_NONE = -1, /*Not to use with messages*/
     LogLevel_INFO,
     LogLevel_WARN,
@@ -15,7 +16,8 @@ enum LogLevel {
     LogLevel_CRITICAL
 };
 
-class CCoolLogger {
+class CCoolLogger
+{
     private:
         LogLevel m_LogLevel;
         FILE* m_pFile;
@@ -23,7 +25,7 @@ class CCoolLogger {
         std::string m_sLogFileName;
 
         void OpenLogFile();
-        std::string_view GetLogLevelString(LogLevel) const;
+        std::string_view GetLogLevelString(const LogLevel) const;
         void LogToScreen(const std::string_view&, const std::string&) const;
         void LogToFile(const std::string_view&, const std::string&) const;
 
@@ -36,7 +38,7 @@ class CCoolLogger {
         CCoolLogger& operator=(CCoolLogger&&) = delete;
         ~CCoolLogger();
 
-        void SetLeastLogLevel(LogLevel);
+        void SetLeastLogLevel(const LogLevel);
         void LogMsg(LogLevel, const std::string&) const;
 };
 

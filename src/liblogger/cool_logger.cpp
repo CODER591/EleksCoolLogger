@@ -3,23 +3,25 @@
 #include <stdio.h>
 #include <iostream>
 
-const char g_kDefaultFileName[] = "default_log.txt";
-const char g_kBeginOfLogFile[] = "<<<<<<<<<<<<<<<<<<<LOG FILE>>>>>>>>>>>>>>>>>>>>>>";
-const char g_kEndOfLogFile[] = "<<<<<<<<<<<<<<<<<<<!END LOG FILE>>>>>>>>>>>>>>>>>>";
+const char g_cszDefaultFileName[] = "default_log.txt";
+const char g_cszDefaultFileName[] = "<<<<<<<<<<<<<<<<<<<LOG FILE>>>>>>>>>>>>>>>>>>>>>>";
+const char g_cszEndOfLogFile[] = "<<<<<<<<<<<<<<<<<<<!END LOG FILE>>>>>>>>>>>>>>>>>>";
 
 CCoolLogger::CCoolLogger(): m_LogLevel(LogLevel_NONE),
-                            m_sLogFileName(g_kDefaultFileName) {
+                            m_sLogFileName(g_cszDefaultFileName)
+{
     OpenLogFile();
 }
 
 CCoolLogger::CCoolLogger(const std::string& filename): m_LogLevel(LogLevel_NONE),
-                                                       m_sLogFileName(filename) {
+                                                       m_sLogFileName(filename)
+{
     OpenLogFile();
 }
 
 CCoolLogger::~CCoolLogger() {
     if (m_pFile) {
-        fputs(g_kEndOfLogFile, m_pFile);
+        fputs(g_cszEndOfLogFile, m_pFile);
         fclose(m_pFile);
     }
 }
@@ -31,17 +33,17 @@ void CCoolLogger::OpenLogFile() {
         LogToScreen(logLevelStr, "Log file was not opened!");
         return;
     }
-    fputs(g_kBeginOfLogFile, m_pFile);
+    fputs(g_cszDefaultFileName, m_pFile);
     fputs("\n", m_pFile);
 }
 
-void CCoolLogger::SetLeastLogLevel(LogLevel log_level) {
+void CCoolLogger::SetLeastLogLevel(const LogLevel log_level) {
     m_LogLevel = log_level;
     auto svLogLevel = GetLogLevelString(log_level);
     LogMsg(LogLevel_CRITICAL, "Log level has changed to: " + std::string(svLogLevel.data()));
 }
 
-std::string_view CCoolLogger::GetLogLevelString(LogLevel level) const {
+std::string_view CCoolLogger::GetLogLevelString(const LogLevel level) const {
     switch (level) {
         case LogLevel_INFO:
             return {"INFO"};

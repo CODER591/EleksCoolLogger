@@ -3,7 +3,8 @@
 #include "liblogger/cool_logger.h"
 
 
-int main() {
+int main()
+{
     CCoolLogger logger("cool_file.txt");
 
     logger.LogMsg(LogLevel_ERROR, "ERROR OMG!");
